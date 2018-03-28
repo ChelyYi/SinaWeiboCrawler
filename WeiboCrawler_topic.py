@@ -177,7 +177,7 @@ class WeiboCrawler:
         days = monthes[month-1] # get days of specific month
         urlcode = self.__urlencode(topic) # search content
 
-        for d in range(0,days+1,1): # every day
+        for d in range(1,days+1,1): # every day
             for h in range(0,24,1): # every hour
                 date = str(year)+"-"+ str(month)+"-"+str(d)+"-"+str(h)
                 page_url = 'https://s.weibo.com/weibo/'+urlcode+'&scope=ori&suball=1&timescope=custom:'+ date+ ':'+ date
@@ -269,10 +269,12 @@ class WeiboCrawler:
                     a.extract()
 
             weibo_content = p_tag.text.strip()
+            weibo_content = weibo_content.replace('\n',' ')
+            weibo_content = weibo_content.replace('\t', ' ')
             if weibo_content.startswith('//'):
                 continue
 
-            if str(topic) in weibo_content:
+            if topic in weibo_content:
                 print(user_name, "\t", weibo_content)
                 write_file.write(user_name+"\t"+weibo_content+"\n")
 
